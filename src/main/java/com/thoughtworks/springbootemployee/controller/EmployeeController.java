@@ -69,6 +69,16 @@ public class EmployeeController {
         return null;
     }
 
+    @DeleteMapping("/{id}")
+    public Employee deleteEmployee(@PathVariable int id){
+        List<Employee> employees = createNewEmployees();
+        for(int index = 0, length = employees.size(); index < length; index++){
+            if(employees.get(index).getId() == id){
+                return employees.remove(index);
+            }
+        }
+        return null;
+    }
 
     private List<Employee> createNewEmployees() {
         List<Employee> employees = new ArrayList<>();
