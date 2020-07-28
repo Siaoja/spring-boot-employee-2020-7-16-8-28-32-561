@@ -1,6 +1,5 @@
 package com.thoughtworks.springbootemployee.controller;
 
-import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,29 +15,39 @@ public class EmployeeController {
 //    }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable int id){
+    public Employee getEmployeeById(@PathVariable int id) {
         List<Employee> employees = createNewEmployees();
-        for(Employee employee : employees){
-            if(employee.getId() == id){
+        for (Employee employee : employees) {
+            if (employee.getId() == id) {
                 return employee;
             }
         }
         return null;
     }
 
+//    @GetMapping
+//    public List<Employee> getEmployeeByPage(@RequestParam int page, @RequestParam int pageSize) {
+//        List<Employee> employees = createNewEmployees();
+//        int beginIndex = (page - 1) * pageSize;
+//        int endIndex = page * pageSize;
+//        List<Employee> responseEmployees = new ArrayList<>();
+//        for (; beginIndex < endIndex && beginIndex < employees.size(); beginIndex++) {
+//            responseEmployees.add(employees.get(beginIndex));
+//        }
+//        return responseEmployees;
+//    }
+
     @GetMapping
-    public List<Employee> getEmployeeByPage(@RequestParam int page, @RequestParam int pageSize) {
+    public List<Employee> getEmployeesByConditions(@RequestParam String gender) {
         List<Employee> employees = createNewEmployees();
-        int beginIndex = (page - 1) * pageSize;
-        int endIndex = page * pageSize;
         List<Employee> responseEmployees = new ArrayList<>();
-        for (; beginIndex < endIndex && beginIndex < employees.size(); beginIndex++) {
-            responseEmployees.add(employees.get(beginIndex));
+        for (Employee employee : employees) {
+            if (employee.getGender().equals(gender)) {
+                responseEmployees.add(employee);
+            }
         }
         return responseEmployees;
     }
-
-
 
     private List<Employee> createNewEmployees() {
         List<Employee> employees = new ArrayList<>();
