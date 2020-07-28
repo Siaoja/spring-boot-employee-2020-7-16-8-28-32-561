@@ -49,6 +49,27 @@ public class EmployeeController {
         return responseEmployees;
     }
 
+    @PostMapping
+    public Employee addEmployee(@RequestBody Employee employee){
+        return new Employee(employee.getId(),employee.getName(),employee.getAge(),employee.getGender(),employee.getSalary());
+    }
+
+    @PutMapping("/{id}")
+    public Employee updateEmployee(@PathVariable int id, @RequestBody Employee updateEmployee){
+        List<Employee> employees = createNewEmployees();
+        for(Employee employee : employees){
+            if(employee.getId() == id){
+                employee.setAge(updateEmployee.getAge());
+                employee.setGender(updateEmployee.getGender());
+                employee.setName(updateEmployee.getName());
+                employee.setSalary(updateEmployee.getSalary());
+                return employee;
+            }
+        }
+        return null;
+    }
+
+
     private List<Employee> createNewEmployees() {
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "alibaba1", 20, "male", 6000));
