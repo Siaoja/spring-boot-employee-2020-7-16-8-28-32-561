@@ -5,6 +5,7 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 @RestController
@@ -20,12 +21,16 @@ public class CompanyController {
 
     @GetMapping("/{id}")
     public Company getCompany(@PathVariable int id) {
-        for (int i = 0; i < companies.size(); i++) {
-            if (companies.get(i).getId() == id) {
-                return companies.get(i);
+
+        Company findedCompany = null;
+
+        for(Company company : companies){
+            if(company.getId() == id){
+                findedCompany = company;
             }
         }
-        return null;
+
+        return findedCompany;
     }
 
     @GetMapping("/{id}/employees")
