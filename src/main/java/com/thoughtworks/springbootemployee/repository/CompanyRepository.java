@@ -13,4 +13,8 @@ public class CompanyRepository {
     public List<Company> findAll(Integer page, Integer pageSize) {
         return null;
     }
+
+    public Company findByID() {
+        return null;
+    }
 }
