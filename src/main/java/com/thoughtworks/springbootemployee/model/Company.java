@@ -1,29 +1,33 @@
 package com.thoughtworks.springbootemployee.model;
 
-import java.util.ArrayList;
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
 public class Company {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String companyName;
-    private int employeesNumber;
+    private Integer employeesNumber;
+    @OneToMany
     private List<Employee> employees;
 
     public Company() {
     }
 
-    public Company(int id, String companyName, int employeesNumber, List<Employee> employees) {
+    public Company(Integer id, String companyName, Integer employeesNumber, List<Employee> employees) {
         this.id = id;
         this.companyName = companyName;
         this.employeesNumber = employeesNumber;
         this.employees = employees;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -35,11 +39,11 @@ public class Company {
         this.companyName = companyName;
     }
 
-    public int getEmployeesNumber() {
+    public Integer getEmployeesNumber() {
         return employeesNumber;
     }
 
-    public void setEmployeesNumber(int employeesNumber) {
+    public void setEmployeesNumber(Integer employeesNumber) {
         this.employeesNumber = employeesNumber;
     }
 
@@ -51,13 +55,4 @@ public class Company {
         this.employees = employees;
     }
 
-    @Override
-    public String toString() {
-        return "Company{" +
-                "id=" + id +
-                ", companyName='" + companyName + '\'' +
-                ", employeesNumber=" + employeesNumber +
-                ", employees=" + employees +
-                '}';
-    }
 }
