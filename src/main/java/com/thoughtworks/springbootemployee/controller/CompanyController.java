@@ -47,7 +47,6 @@ public class CompanyController {
         for (; beginIndex <= endIndex && beginIndex < companies.size(); beginIndex++) {
             displayCompanies.add(companies.get(beginIndex));
         }
-        System.out.println(displayCompanies);
         return displayCompanies;
     }
 
