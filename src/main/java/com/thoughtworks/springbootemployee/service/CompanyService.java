@@ -40,6 +40,6 @@ public class CompanyService {
     }
 
     public Company deleteCompany(Integer id) {
-        return null;
+        return companyRepository.deleteCompany(id);
     }
 }
