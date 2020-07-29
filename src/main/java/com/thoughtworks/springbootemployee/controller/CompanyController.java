@@ -35,6 +35,9 @@ public class CompanyController {
 
     @GetMapping("/{id}/employees")
     public List<Employee> getEmployees(@PathVariable int id) {
+
+        List<Employee> employees = null;
+
         for (int i = 0; i < companies.size(); i++) {
             if (companies.get(i).getId() == id) {
                 return companies.get(i).getEmployees();
