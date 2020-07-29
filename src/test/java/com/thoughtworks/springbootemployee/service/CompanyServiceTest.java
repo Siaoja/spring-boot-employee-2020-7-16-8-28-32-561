@@ -28,4 +28,6 @@ public class CompanyServiceTest {
         //then
         assertEquals(2,returnCompanies.size());
     }
+
+
 }
