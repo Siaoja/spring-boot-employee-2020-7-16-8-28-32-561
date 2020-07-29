@@ -70,12 +70,18 @@ public class CompanyController {
 
     @DeleteMapping("/{id}")
     public Company deleteCompanyById(@PathVariable int id) {
-        for (int index = 0; index < companies.size(); index++) {
-            if (companies.get(index).getId() == id) {
-                return companies.remove(index);
+
+        Company deletedCompany = null;
+
+        for(Company company : companies){
+            if(company.getId() == id){
+                deletedCompany = company;
             }
         }
-        return null;
+
+        companies.remove(deletedCompany);
+
+        return deletedCompany;
     }
 
     private List<Company> createNewCompany() {
