@@ -97,4 +97,20 @@ public class EmployeeServiceTest {
         assertEquals(employee,returnEmployee);
 
     }
+
+    @Test
+    void should_return_employee_when_update_employee_given_employee() {
+        //given
+        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+        Employee employee = new Employee(1, "hello", 18, "male", 3000);
+        given(employeeRepository.updateEmployee(employee)).willReturn(employee);
+
+        //when
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        Employee returnEmployee = employeeService.updateEmployee(employee);
+
+        //then
+        assertEquals(employee,returnEmployee);
+
+    }
 }
