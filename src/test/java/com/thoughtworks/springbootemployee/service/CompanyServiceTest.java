@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -62,5 +63,23 @@ public class CompanyServiceTest {
 
         //then
         assertEquals(company,returnCompany);
+    }
+
+    @Test
+    void should_return_employees_when_get_company_employees_then_given_id() {
+        //given
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee());
+        Company company = new Company(1,"alibaba",2000, employees);
+        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        given(companyRepository.findByID(1)).willReturn(company);
+
+        //when
+        CompanyService companyService = new CompanyService(companyRepository);
+        List<Employee> returnEmployees = companyService.getEmployeesByCompanyId(1);
+
+        //then
+        assertEquals(company.getEmployees(),returnEmployees);
+
     }
 }
