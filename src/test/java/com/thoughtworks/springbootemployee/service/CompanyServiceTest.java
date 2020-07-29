@@ -82,4 +82,20 @@ public class CompanyServiceTest {
         assertEquals(company.getEmployees(),returnEmployees);
 
     }
+
+    @Test
+    void should_return_company_when_add_company_then_given_company() {
+        //given
+        Company company = new Company(1,"alibaba",2000, null);
+        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        given(companyRepository.addCompany(company)).willReturn(company);
+
+        //when
+        CompanyService companyService = new CompanyService(companyRepository);
+        Company returnCompany = companyService.addCompany(company);
+
+        //then
+        assertEquals(company,returnCompany);
+
+    }
 }

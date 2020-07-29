@@ -17,4 +17,8 @@ public class CompanyRepository {
     public Company findByID(Integer id) {
         return null;
     }
+
+    public Company addCompany(Company company) {
+        return null;
+    }
 }
