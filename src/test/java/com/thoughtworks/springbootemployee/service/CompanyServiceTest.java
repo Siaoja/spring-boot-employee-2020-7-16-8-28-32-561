@@ -98,4 +98,20 @@ public class CompanyServiceTest {
         assertEquals(company,returnCompany);
 
     }
+
+    @Test
+    void should_return_company_when_update_company_then_given_company() {
+        //given
+        Company company = new Company(1,"alibaba",2000, null);
+        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        given(companyRepository.updateCompany(company)).willReturn(company);
+
+        //when
+        CompanyService companyService = new CompanyService(companyRepository);
+        Company returnCompany = companyService.updateCompany(company);
+
+        //then
+        assertEquals(company,returnCompany);
+
+    }
 }
