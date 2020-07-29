@@ -29,4 +29,8 @@ public class EmployeeRepository {
     public Employee updateEmployee(Employee employee) {
         return null;
     }
+
+    public Employee deleteEmployee(int i) {
+        return null;
+    }
 }
