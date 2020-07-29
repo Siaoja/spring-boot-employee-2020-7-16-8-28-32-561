@@ -21,4 +21,8 @@ public class EmployeeRepository {
     public List<Employee> findAllByGender(String male) {
         return null;
     }
+
+    public Employee addEmployee(Employee employee) {
+        return null;
+    }
 }

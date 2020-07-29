@@ -28,6 +28,10 @@ public class EmployeeService {
     }
 
     public List<Employee> getEmployeesByGender(String male) {
-        return null;
+        return employeeRepository.findAllByGender(male);
+    }
+
+    public Employee addEmployee(Employee employee) {
+        return employeeRepository.addEmployee(employee);
     }
 }
