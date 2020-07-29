@@ -7,7 +7,8 @@ import java.util.List;
 
 public class EmployeeService {
     private EmployeeRepository employeeRepository;
-    public EmployeeService(){
+
+    public EmployeeService() {
     }
 
     public EmployeeService(EmployeeRepository employeeRepository) {
@@ -23,6 +24,6 @@ public class EmployeeService {
     }
 
     public List<Employee> getAllEmployeesByPage(Integer page, Integer pageSize) {
-        return null;
+        return employeeRepository.findAllByPage(page, pageSize);
     }
 }
