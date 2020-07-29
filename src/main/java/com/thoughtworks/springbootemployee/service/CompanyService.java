@@ -23,6 +23,6 @@ public class CompanyService {
 
 
     public Company getCompanyById(Integer id) {
-        return null;
+        return companyRepository.findByID(id);
     }
 }
