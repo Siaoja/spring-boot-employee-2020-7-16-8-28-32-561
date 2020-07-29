@@ -30,4 +30,22 @@ public class CompanyServiceTest {
     }
 
 
+    @Test
+    void should_return_companies_when_get_companies_then_given_pages() {
+        //given
+        List<Company> companies = new ArrayList<>();
+        companies.add(new Company());
+        companies.add(new Company());
+        companies.add(new Company());
+        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        given(companyRepository.findAll(1,2)).willReturn(companies.subList(0,2));
+
+        //when
+        CompanyService companyService = new CompanyService(companyRepository);
+        List<Company> returnCompanies = companyService.getAllCompaniesByPage(1,2);
+
+        //then
+        assertEquals(2,returnCompanies.size());
+
+    }
 }

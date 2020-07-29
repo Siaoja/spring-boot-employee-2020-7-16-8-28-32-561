@@ -16,4 +16,8 @@ public class CompanyService {
     public List<Company> getAllCompanies(){
         return companyRepository.findAll();
     }
+
+    public List<Company> getAllCompaniesByPage(Integer page, Integer pageSize) {
+        return null;
+    }
 }
