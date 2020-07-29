@@ -25,4 +25,8 @@ public class CompanyRepository {
     public Company updateCompany(Company company) {
         return null;
     }
+
+    public Company deleteCompany(Integer id) {
+        return null;
+    }
 }

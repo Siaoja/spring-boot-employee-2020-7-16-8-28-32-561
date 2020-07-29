@@ -38,4 +38,8 @@ public class CompanyService {
     public Company updateCompany(Company company) {
         return companyRepository.updateCompany(company);
     }
+
+    public Company deleteCompany(Integer id) {
+        return null;
+    }
 }

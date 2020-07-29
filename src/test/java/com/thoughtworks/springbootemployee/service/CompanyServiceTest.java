@@ -114,4 +114,25 @@ public class CompanyServiceTest {
         assertEquals(company,returnCompany);
 
     }
+
+    @Test
+    void should_return_company_when_delete_company_then_given_id() {
+        //given
+        Company company = new Company(1,"alibaba",2000, null);
+        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        given(companyRepository.deleteCompany(1)).willReturn(company);
+
+        //when
+        CompanyService companyService = new CompanyService(companyRepository);
+        Company returnCompany = companyService.deleteCompany(1);
+
+        //then
+        assertEquals(company,returnCompany);
+
+        //when
+
+
+        //then
+
+    }
 }
