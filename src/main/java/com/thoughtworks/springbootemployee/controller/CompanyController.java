@@ -57,16 +57,15 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public Company updateCompany(@PathVariable int id, @RequestBody Company company) {
-        for (int index = 0; index < companies.size(); index++) {
-            if (companies.get(index).getId() == id) {
-                companies.get(index).setCompanyName(company.getCompanyName());
-                companies.get(index).setEmployees(company.getEmployees());
-                companies.get(index).setEmployeesNumber(company.getEmployeesNumber());
-                return companies.get(index);
-            }
-        }
-        return null;
+    public Company updateCompany(@PathVariable int id, @RequestBody Company updatedCompany) {
+
+        Company company = (companies.stream().filter(existCompany -> existCompany.getId() == id).findFirst().get());
+
+        company.setCompanyName(updatedCompany.getCompanyName());
+        company.setEmployees(updatedCompany.getEmployees());
+        company.setEmployeesNumber(updatedCompany.getEmployeesNumber());
+
+        return company;
     }
 
     @DeleteMapping("/{id}")
