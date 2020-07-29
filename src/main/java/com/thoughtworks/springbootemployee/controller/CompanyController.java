@@ -11,12 +11,12 @@ import java.util.List;
 @RequestMapping("/companies")
 public class CompanyController {
 
-//    @GetMapping
-//    public List<Company> getAllCompany(){
-//        List<Company> companies =createNewCompany();
-//
-//        return companies;
-//    }
+    @GetMapping
+    public List<Company> getAllCompany(){
+        List<Company> companies =createNewCompany();
+
+        return companies;
+    }
 
     @GetMapping("/{id}")
     public Company getCompany(@PathVariable int id) {
@@ -40,7 +40,7 @@ public class CompanyController {
         return null;
     }
 
-    @GetMapping
+    @GetMapping(params = {"page","pageSize"})
     public List<Company> getCompaniesByPage(@RequestParam int page, @RequestParam int pageSize) {
         List<Company> companies = createNewCompany();
         int beginIndex = (page - 1) * pageSize;

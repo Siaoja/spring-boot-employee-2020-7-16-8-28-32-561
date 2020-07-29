@@ -9,10 +9,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-//    @GetMapping
-//    public List<Employee> getAllEmployees(){
-//        return createNewEmployees();
-//    }
+    @GetMapping
+    public List<Employee> getAllEmployees(){
+        return createNewEmployees();
+    }
 
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable int id) {
@@ -25,20 +25,20 @@ public class EmployeeController {
         return null;
     }
 
-//    @GetMapping
-//    public List<Employee> getEmployeeByPage(@RequestParam int page, @RequestParam int pageSize) {
-//        List<Employee> employees = createNewEmployees();
-//        int beginIndex = (page - 1) * pageSize;
-//        int endIndex = page * pageSize;
-//        List<Employee> responseEmployees = new ArrayList<>();
-//        for (; beginIndex < endIndex && beginIndex < employees.size(); beginIndex++) {
-//            responseEmployees.add(employees.get(beginIndex));
-//        }
-//        return responseEmployees;
-//    }
+    @GetMapping(params = {"page","pageSize"})
+    public List<Employee> getEmployeeByPage(@RequestParam(defaultValue = "null") int page, @RequestParam(defaultValue = "null") int pageSize) {
+        List<Employee> employees = createNewEmployees();
+        int beginIndex = (page - 1) * pageSize;
+        int endIndex = page * pageSize;
+        List<Employee> responseEmployees = new ArrayList<>();
+        for (; beginIndex < endIndex && beginIndex < employees.size(); beginIndex++) {
+            responseEmployees.add(employees.get(beginIndex));
+        }
+        return responseEmployees;
+    }
 
-    @GetMapping
-    public List<Employee> getEmployeesByConditions(@RequestParam String gender) {
+    @GetMapping(params = {"gender"})
+    public List<Employee> getEmployeesByConditions(@RequestParam(defaultValue = "null") String gender) {
         List<Employee> employees = createNewEmployees();
         List<Employee> responseEmployees = new ArrayList<>();
         for (Employee employee : employees) {
