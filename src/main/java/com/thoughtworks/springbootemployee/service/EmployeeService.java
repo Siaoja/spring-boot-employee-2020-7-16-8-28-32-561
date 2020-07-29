@@ -19,6 +19,6 @@ public class EmployeeService {
     }
 
     public Employee getEmployeeByID(Integer id) {
-        return null;
+        return employeeRepository.findByID(id);
     }
 }
