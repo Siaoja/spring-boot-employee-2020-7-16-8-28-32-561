@@ -12,8 +12,8 @@ import java.util.List;
 public class CompanyController {
 
     @GetMapping
-    public List<Company> getAllCompany(){
-        List<Company> companies =createNewCompany();
+    public List<Company> getAllCompany() {
+        List<Company> companies = createNewCompany();
 
         return companies;
     }
@@ -40,7 +40,7 @@ public class CompanyController {
         return null;
     }
 
-    @GetMapping(params = {"page","pageSize"})
+    @GetMapping(params = {"page", "pageSize"})
     public List<Company> getCompaniesByPage(@RequestParam int page, @RequestParam int pageSize) {
         List<Company> companies = createNewCompany();
         int beginIndex = (page - 1) * pageSize;

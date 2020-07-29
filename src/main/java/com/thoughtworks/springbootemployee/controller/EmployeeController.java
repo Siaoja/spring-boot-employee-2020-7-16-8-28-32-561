@@ -10,7 +10,7 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
     @GetMapping
-    public List<Employee> getAllEmployees(){
+    public List<Employee> getAllEmployees() {
         return createNewEmployees();
     }
 
@@ -25,7 +25,7 @@ public class EmployeeController {
         return null;
     }
 
-    @GetMapping(params = {"page","pageSize"})
+    @GetMapping(params = {"page", "pageSize"})
     public List<Employee> getEmployeeByPage(@RequestParam(defaultValue = "null") int page, @RequestParam(defaultValue = "null") int pageSize) {
         List<Employee> employees = createNewEmployees();
         int beginIndex = (page - 1) * pageSize;
@@ -50,15 +50,15 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public Employee addEmployee(@RequestBody Employee employee){
-        return new Employee(employee.getId(),employee.getName(),employee.getAge(),employee.getGender(),employee.getSalary());
+    public Employee addEmployee(@RequestBody Employee employee) {
+        return new Employee(employee.getId(), employee.getName(), employee.getAge(), employee.getGender(), employee.getSalary());
     }
 
     @PutMapping("/{id}")
-    public Employee updateEmployee(@PathVariable int id, @RequestBody Employee updateEmployee){
+    public Employee updateEmployee(@PathVariable int id, @RequestBody Employee updateEmployee) {
         List<Employee> employees = createNewEmployees();
-        for(Employee employee : employees){
-            if(employee.getId() == id){
+        for (Employee employee : employees) {
+            if (employee.getId() == id) {
                 employee.setAge(updateEmployee.getAge());
                 employee.setGender(updateEmployee.getGender());
                 employee.setName(updateEmployee.getName());
@@ -70,10 +70,10 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public Employee deleteEmployee(@PathVariable int id){
+    public Employee deleteEmployee(@PathVariable int id) {
         List<Employee> employees = createNewEmployees();
-        for(int index = 0, length = employees.size(); index < length; index++){
-            if(employees.get(index).getId() == id){
+        for (int index = 0, length = employees.size(); index < length; index++) {
+            if (employees.get(index).getId() == id) {
                 return employees.remove(index);
             }
         }
