@@ -44,4 +44,23 @@ public class EmployeeServiceTest {
         assertEquals(employee,returnEmployee);
 
     }
+
+    @Test
+    void should_return_employees_when_get_employees_by_page_given_page_pageSize() {
+        //given
+        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "hello", 18, "male", 3000));
+        employees.add(new Employee(2, "hellome", 18, "male", 5000));
+        given(employeeRepository.findAllByPage(1,2)).willReturn(employees);
+
+        //when
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        Integer page = 1, pageSize = 2;
+        List<Employee> returnEmployees = employeeService.getAllEmployeesByPage(page, pageSize);
+
+        //then
+        assertEquals(2, returnEmployees.size());
+
+    }
 }

@@ -12,4 +12,10 @@ public class EmployeeRepository {
     public Employee findByID(Integer id) {
         return null;
     }
+
+    public List<Employee> findAllByPage(Integer page, Integer pageSize) {
+        return null;
+    }
+
+
 }
