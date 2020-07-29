@@ -11,16 +11,15 @@ import java.util.List;
 @RequestMapping("/companies")
 public class CompanyController {
 
+    List<Company> companies = createNewCompany();
+
     @GetMapping
     public List<Company> getAllCompany() {
-        List<Company> companies = createNewCompany();
-
         return companies;
     }
 
     @GetMapping("/{id}")
     public Company getCompany(@PathVariable int id) {
-        List<Company> companies = createNewCompany();
         for (int i = 0; i < companies.size(); i++) {
             if (companies.get(i).getId() == id) {
                 return companies.get(i);
@@ -31,7 +30,6 @@ public class CompanyController {
 
     @GetMapping("/{id}/employees")
     public List<Employee> getEmployees(@PathVariable int id) {
-        List<Company> companies = createNewCompany();
         for (int i = 0; i < companies.size(); i++) {
             if (companies.get(i).getId() == id) {
                 return companies.get(i).getEmployees();
@@ -42,7 +40,7 @@ public class CompanyController {
 
     @GetMapping(params = {"page", "pageSize"})
     public List<Company> getCompaniesByPage(@RequestParam int page, @RequestParam int pageSize) {
-        List<Company> companies = createNewCompany();
+
         int beginIndex = (page - 1) * pageSize;
         int endIndex = page * pageSize - 1;
         List<Company> displayCompanies = new ArrayList<>();
@@ -60,7 +58,6 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     public Company updateCompany(@PathVariable int id, @RequestBody Company company) {
-        List<Company> companies = createNewCompany();
         for (int index = 0; index < companies.size(); index++) {
             if (companies.get(index).getId() == id) {
                 companies.get(index).setCompanyName(company.getCompanyName());
@@ -74,7 +71,6 @@ public class CompanyController {
 
     @DeleteMapping("/{id}")
     public Company deleteCompanyById(@PathVariable int id) {
-        List<Company> companies = createNewCompany();
         for (int index = 0; index < companies.size(); index++) {
             if (companies.get(index).getId() == id) {
                 return companies.remove(index);
