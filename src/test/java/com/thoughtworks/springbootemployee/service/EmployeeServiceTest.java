@@ -17,8 +17,8 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
         List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "hello", 18, "male",3000 ));
-        employees.add(new Employee(2, "hellome", 18, "male",5000));
+        employees.add(new Employee(1, "hello", 18, "male", 3000));
+        employees.add(new Employee(2, "hellome", 18, "male", 5000));
         given(employeeRepository.findAll()).willReturn(employees);
 
         //when
@@ -26,6 +26,22 @@ public class EmployeeServiceTest {
         List<Employee> returnEmployees = employeeService.getAllEmployees();
 
         //then
-        assertEquals(2,returnEmployees.size());
+        assertEquals(2, returnEmployees.size());
+    }
+
+    @Test
+    void should_return_employee_when_getById_given_id() {
+        //given
+        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
+        Employee employee = new Employee(1, "hello", 18, "male", 3000);
+        given(employeeRepository.findByID(1)).willReturn(employee);
+
+        //when
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        Employee returnEmployee = employeeService.getEmployeeByID(1);
+
+        //then
+        assertEquals(employee,returnEmployee);
+
     }
 }

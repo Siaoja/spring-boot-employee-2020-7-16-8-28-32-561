@@ -8,4 +8,8 @@ public class EmployeeRepository {
     public List<Employee> findAll() {
         return null;
     }
+
+    public Employee findByID(Integer id) {
+        return null;
+    }
 }
