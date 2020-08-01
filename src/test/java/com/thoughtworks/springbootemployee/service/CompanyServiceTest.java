@@ -3,6 +3,7 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.data.domain.PageImpl;
@@ -16,121 +17,118 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 
 public class CompanyServiceTest {
+    CompanyService companyService;
+    CompanyRepository companyRepository;
+    List<Company> companies;
+
+    @BeforeEach
+    void setUp() {
+
+        companyRepository = Mockito.mock(CompanyRepository.class);
+        companyService = new CompanyService(companyRepository);
+        List<Employee> employees = new ArrayList<>();
+        employees.add(new Employee(1, "hello", 18, "male", 3000));
+        employees.add(new Employee(2, "hellome", 18, "female", 5000));
+        employees.add(new Employee(3, "hellome", 18, "male", 5000));
+        companies = new ArrayList<>();
+        companies.add(new Company(0, "alibaba", 200, employees));
+        companies.add(new Company(1, "alibaba1", 200, employees));
+        companies.add(new Company(2, "alibaba2", 200, employees));
+    }
+
     @Test
     void should_return_companies_when_getAll_given_none() {
         //given
-        List<Company> companies = new ArrayList<>();
-        companies.add(new Company());
-        companies.add(new Company());
-        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
         given(companyRepository.findAll()).willReturn(companies);
 
         //when
-        CompanyService companyService = new CompanyService(companyRepository);
         List<Company> returnCompanies = companyService.getAllCompanies();
 
         //then
-        assertEquals(2,returnCompanies.size());
+        assertEquals(3, returnCompanies.size());
     }
 
 
     @Test
     void should_return_companies_when_get_companies_then_given_pages() {
         //given
-        List<Company> companies = new ArrayList<>();
-        companies.add(new Company());
-        companies.add(new Company());
-        companies.add(new Company());
-        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
-        given(companyRepository.findAll(PageRequest.of(1,2))).willReturn(new PageImpl<>(companies.subList(0,2)));
+        int page = 1, pageSize = 2;
+        given(companyRepository.findAll(PageRequest.of(page - 1, pageSize))).willReturn(new PageImpl<>(companies.subList(0, 2)));
 
         //when
-        CompanyService companyService = new CompanyService(companyRepository);
-        List<Company> returnCompanies = companyService.getAllCompaniesByPage(1,2);
+        List<Company> returnCompanies = companyService.getAllCompaniesByPage(page, pageSize);
 
         //then
-        assertEquals(2,returnCompanies.size());
+        assertEquals(2, returnCompanies.size());
 
     }
 
     @Test
     void should_return_company_when_get_company_then_given_id() {
         //given
-        Company company = new Company(1,"alibaba",2000, null);
-        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
-        given(companyRepository.findById(1)).willReturn(Optional.of(company));
+        int id = 1;
+        given(companyRepository.findById(id)).willReturn(Optional.of(companies.get(id)));
 
         //when
-        CompanyService companyService = new CompanyService(companyRepository);
         Company returnCompany = companyService.getCompanyById(1);
 
         //then
-        assertEquals(company,returnCompany);
+        assertEquals(companies.get(id), returnCompany);
     }
 
     @Test
     void should_return_employees_when_get_company_employees_then_given_id() {
         //given
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee());
-        Company company = new Company(1,"alibaba",2000, employees);
-        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
-        given(companyRepository.findById(1)).willReturn(Optional.of(company));
+        int id = 1;
+        given(companyRepository.findById(id)).willReturn(Optional.of(companies.get(id)));
 
         //when
-        CompanyService companyService = new CompanyService(companyRepository);
         List<Employee> returnEmployees = companyService.getEmployeesByCompanyId(1);
 
         //then
-        assertEquals(company.getEmployees(),returnEmployees);
+        assertEquals(companies.get(id).getEmployees(), returnEmployees);
 
     }
 
     @Test
     void should_return_company_when_add_company_then_given_company() {
         //given
-        Company company = new Company(1,"alibaba",2000, null);
-        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
+        Company company = new Company(3, "alibaba", 2000, null);
         given(companyRepository.save(company)).willReturn(company);
 
         //when
-        CompanyService companyService = new CompanyService(companyRepository);
         Company returnCompany = companyService.addCompany(company);
 
         //then
-        assertEquals(company,returnCompany);
+        assertEquals(company, returnCompany);
 
     }
 
     @Test
     void should_return_company_when_update_company_then_given_company() {
         //given
-        Company company = new Company(1,"alibaba",2000, null);
-        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
-        given(companyRepository.save(company)).willReturn(company);
+        Company updatedCompany = new Company(1, "huawei", 2000, null);
+        given(companyRepository.save(updatedCompany)).willReturn(updatedCompany);
 
         //when
-        CompanyService companyService = new CompanyService(companyRepository);
-        Company returnCompany = companyService.updateCompany(company.getId(),company);
+        Company returnCompany = companyService.updateCompany(updatedCompany.getId(), updatedCompany);
 
         //then
-        assertEquals(company,returnCompany);
+        assertEquals(updatedCompany, returnCompany);
 
     }
 
     @Test
     void should_return_company_when_delete_company_then_given_id() {
         //given
-        Company company = new Company(1,"alibaba",2000, null);
-        CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
-        given(companyRepository.findById(company.getId())).willReturn(Optional.of(company));
+        int id = 1;
+        given(companyRepository.findById(id)).willReturn(Optional.of(companies.get(id)));
 
         //when
-        CompanyService companyService = new CompanyService(companyRepository);
-        Company returnCompany = companyService.deleteCompany(1);
+        Company returnCompany = companyService.deleteCompany(id);
 
         //then
-        assertEquals(company,returnCompany);
+        assertEquals(companies.get(id), returnCompany);
 
 
     }

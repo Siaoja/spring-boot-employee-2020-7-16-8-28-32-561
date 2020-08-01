@@ -15,18 +15,20 @@ public class CompanyService {
     @Autowired
     CompanyRepository companyRepository;
 
-    public CompanyService(){
+    public CompanyService() {
     }
+
     public CompanyService(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
     }
-    public List<Company> getAllCompanies(){
+
+    public List<Company> getAllCompanies() {
         return companyRepository.findAll();
     }
 
     public List<Company> getAllCompaniesByPage(Integer page, Integer pageSize) {
-        Page<Company> companies = companyRepository.findAll(PageRequest.of(page,pageSize));
-        if(companies == null){
+        Page<Company> companies = companyRepository.findAll(PageRequest.of(page - 1, pageSize));
+        if (companies == null) {
             return null;
         }
         return companies.getContent();
@@ -39,7 +41,7 @@ public class CompanyService {
 
     public List<Employee> getEmployeesByCompanyId(Integer companyId) {
         Company company = companyRepository.findById(companyId).orElse(null);
-        if(company == null || company.getEmployees() == null){
+        if (company == null || company.getEmployees() == null) {
             return null;
         }
         return company.getEmployees();
@@ -56,7 +58,7 @@ public class CompanyService {
 
     public Company deleteCompany(Integer id) {
         Company deletedCompany = companyRepository.findById(id).orElse(null);
-        if(deletedCompany == null){
+        if (deletedCompany == null) {
             return null;
         }
         companyRepository.deleteById(id);
