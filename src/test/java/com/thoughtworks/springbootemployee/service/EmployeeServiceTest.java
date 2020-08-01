@@ -2,132 +2,138 @@ package com.thoughtworks.springbootemployee.service;
 
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
 public class EmployeeServiceTest {
+
+    private EmployeeRepository employeeRepository;
+    private EmployeeService employeeService;
+    private List<Employee> employees;
+
+    @BeforeEach
+    void setUp() {
+        employeeRepository = mock(EmployeeRepository.class);
+        employeeService = new EmployeeService(employeeRepository);
+        employees = new ArrayList<>();
+        employees.add(new Employee(1, "hello", 18, "male", 3000));
+        employees.add(new Employee(2, "hellome", 18, "female", 5000));
+        employees.add(new Employee(3, "hellome", 18, "male", 5000));
+    }
+
     @Test
     void should_return_employees_when_getAll_given_none() {
         //given
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "hello", 18, "male", 3000));
-        employees.add(new Employee(2, "hellome", 18, "male", 5000));
-
+        given(employeeRepository.findAll()).willReturn(employees);
         //when
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
         List<Employee> returnEmployees = employeeService.getAllEmployees();
 
         //then
-//        assertEquals(0, returnEmployees.size());
+        assertEquals(3, returnEmployees.size());
     }
 
     @Test
     void should_return_employee_when_getById_given_id() {
         //given
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-        Employee employee = new Employee(1, "hello", 18, "male", 3000);
+        Integer id = 1;
+        Employee employee = employees.get(0);
+        given(employeeRepository.findById(id)).willReturn(Optional.of(employee));
 
         //when
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
-        Employee returnEmployee = employeeService.getEmployeeByID(1);
+        Employee returnEmployee = employeeService.getEmployeeByID(id);
 
         //then
-//        assertEquals(employee,returnEmployee);
+        assertEquals(employee, returnEmployee);
 
     }
 
     @Test
     void should_return_employees_when_get_employees_by_page_given_page_pageSize() {
         //given
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "hello", 18, "male", 3000));
-        employees.add(new Employee(2, "hellome", 18, "male", 5000));
-        employees.add(new Employee(3, "hellome", 18, "male", 5000));
-        given(employeeRepository.findAll(PageRequest.of(1,2))).willReturn(new PageImpl<>(employees.subList(0,2)));
+        int page = 1, pageSize = 2;
+        given(employeeRepository.findAll(PageRequest.of(page - 1, pageSize))).willReturn(new PageImpl<>(employees.subList(0, 2)));
 
         //when
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
-        Integer page = 1, pageSize = 2;
-        List<Employee> returnEmployees = employeeService.getAllEmployeesByPage(page, pageSize);
+        Page<Employee> returnEmployees = employeeService.getAllEmployeesByPage(page, pageSize);
 
         //then
-        assertEquals(2, returnEmployees.size());
+        assertNotNull(returnEmployees);
+        assertEquals(2, returnEmployees.getContent().size());
+        assertEquals(employees.get(0), returnEmployees.getContent().get(0));
+        assertEquals(employees.get(1), returnEmployees.getContent().get(1));
 
     }
 
     @Test
     void should_return_employees_when_get_employees_given_gender() {
         //given
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
-        List<Employee> employees = new ArrayList<>();
-        employees.add(new Employee(1, "hello", 18, "male", 3000));
-        employees.add(new Employee(2, "hellome", 18, "male", 5000));
-        given(employeeRepository.findAllByGender("male")).willReturn(employees);
+        String gender = "male";
+        given(employeeRepository.findAllByGender(gender)).willReturn(employees.stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList()));
 
         //when
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
-        List<Employee> returnEmployees = employeeService.getEmployeesByGender("male");
+        List<Employee> returnEmployees = employeeService.getEmployeesByGender(gender);
 
         //then
-//        assertEquals(2, returnEmployees.size());
+        assertEquals(2, returnEmployees.size());
+        assertEquals(employees.get(0),returnEmployees.get(0));
+        assertEquals(employees.get(2),returnEmployees.get(1));
 
     }
 
     @Test
     void should_return_employee_when_add_employee_given_employee() {
         //given
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
         Employee employee = new Employee(1, "hello", 18, "male", 3000);
+        given(employeeRepository.save(employee)).willReturn(employee);
 
         //when
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
         Employee returnEmployee = employeeService.addEmployee(employee);
 
         //then
-//        assertEquals(employee,returnEmployee);
+        assertEquals(employee,returnEmployee);
 
     }
 
     @Test
     void should_return_employee_when_update_employee_given_employee() {
         //given
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
         Employee employee = new Employee(1, "hello", 18, "male", 3000);
+        Employee updatedEmployee = new Employee(1, "update", 18, "male", 3000);
         given(employeeRepository.findById(employee.getId())).willReturn(Optional.of(employee));
-        given(employeeRepository.save(employee)).willReturn(employee);
+        given(employeeRepository.save(updatedEmployee)).willReturn(updatedEmployee);
 
         //when
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
-        Employee returnEmployee = employeeService.updateEmployee(1,employee);
+        Employee returnEmployee = employeeService.updateEmployee(updatedEmployee.getId(), updatedEmployee);
 
         //then
-//        assertEquals(employee,returnEmployee);
+        assertEquals(updatedEmployee,returnEmployee);
 
     }
 
     @Test
     void should_return_employee_when_delete_employee_given_employee_id() {
         //given
-        EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
         Employee employee = new Employee(1, "hello", 18, "male", 3000);
+        given(employeeRepository.findById(employee.getId())).willReturn(Optional.of(employee));
 
         //when
-        EmployeeService employeeService = new EmployeeService(employeeRepository);
         Employee returnEmployee = employeeService.deleteEmployee(1);
 
         //then
-//        assertEquals(employee,returnEmployee);
+        assertEquals(employee,returnEmployee);
 
     }
 }
