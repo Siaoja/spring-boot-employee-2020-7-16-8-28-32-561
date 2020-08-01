@@ -123,7 +123,7 @@ public class CompanyServiceTest {
         //given
         Company company = new Company(1,"alibaba",2000, null);
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
-
+        given(companyRepository.findById(company.getId())).willReturn(Optional.of(company));
 
         //when
         CompanyService companyService = new CompanyService(companyRepository);
