@@ -5,9 +5,12 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -39,7 +42,7 @@ public class CompanyServiceTest {
         companies.add(new Company());
         companies.add(new Company());
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
-        given(companyRepository.findAll(1,2)).willReturn(companies.subList(0,2));
+        given(companyRepository.findAll(PageRequest.of(1,2))).willReturn(new PageImpl<>(companies.subList(0,2)));
 
         //when
         CompanyService companyService = new CompanyService(companyRepository);
@@ -55,7 +58,7 @@ public class CompanyServiceTest {
         //given
         Company company = new Company(1,"alibaba",2000, null);
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
-        given(companyRepository.findByID(1)).willReturn(company);
+        given(companyRepository.findById(1)).willReturn(Optional.of(company));
 
         //when
         CompanyService companyService = new CompanyService(companyRepository);
@@ -72,7 +75,7 @@ public class CompanyServiceTest {
         employees.add(new Employee());
         Company company = new Company(1,"alibaba",2000, employees);
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
-        given(companyRepository.findByID(1)).willReturn(company);
+        given(companyRepository.findById(1)).willReturn(Optional.of(company));
 
         //when
         CompanyService companyService = new CompanyService(companyRepository);
@@ -88,7 +91,7 @@ public class CompanyServiceTest {
         //given
         Company company = new Company(1,"alibaba",2000, null);
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
-        given(companyRepository.addCompany(company)).willReturn(company);
+        given(companyRepository.save(company)).willReturn(company);
 
         //when
         CompanyService companyService = new CompanyService(companyRepository);
@@ -104,11 +107,11 @@ public class CompanyServiceTest {
         //given
         Company company = new Company(1,"alibaba",2000, null);
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
-        given(companyRepository.updateCompany(company)).willReturn(company);
+        given(companyRepository.save(company)).willReturn(company);
 
         //when
         CompanyService companyService = new CompanyService(companyRepository);
-        Company returnCompany = companyService.updateCompany(company);
+        Company returnCompany = companyService.updateCompany(company.getId(),company);
 
         //then
         assertEquals(company,returnCompany);
@@ -120,7 +123,7 @@ public class CompanyServiceTest {
         //given
         Company company = new Company(1,"alibaba",2000, null);
         CompanyRepository companyRepository = Mockito.mock(CompanyRepository.class);
-        given(companyRepository.deleteCompany(1)).willReturn(company);
+
 
         //when
         CompanyService companyService = new CompanyService(companyRepository);
@@ -129,10 +132,6 @@ public class CompanyServiceTest {
         //then
         assertEquals(company,returnCompany);
 
-        //when
-
-
-        //then
 
     }
 }

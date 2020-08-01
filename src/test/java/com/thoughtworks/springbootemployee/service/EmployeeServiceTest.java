@@ -3,9 +3,12 @@ package com.thoughtworks.springbootemployee.service;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
@@ -50,6 +53,8 @@ public class EmployeeServiceTest {
         List<Employee> employees = new ArrayList<>();
         employees.add(new Employee(1, "hello", 18, "male", 3000));
         employees.add(new Employee(2, "hellome", 18, "male", 5000));
+        employees.add(new Employee(3, "hellome", 18, "male", 5000));
+        given(employeeRepository.findAll(PageRequest.of(1,2))).willReturn(new PageImpl<>(employees.subList(0,2)));
 
         //when
         EmployeeService employeeService = new EmployeeService(employeeRepository);
@@ -57,7 +62,7 @@ public class EmployeeServiceTest {
         List<Employee> returnEmployees = employeeService.getAllEmployeesByPage(page, pageSize);
 
         //then
-//        assertEquals(2, returnEmployees.size());
+        assertEquals(2, returnEmployees.size());
 
     }
 
@@ -99,6 +104,8 @@ public class EmployeeServiceTest {
         //given
         EmployeeRepository employeeRepository = mock(EmployeeRepository.class);
         Employee employee = new Employee(1, "hello", 18, "male", 3000);
+        given(employeeRepository.findById(employee.getId())).willReturn(Optional.of(employee));
+        given(employeeRepository.save(employee)).willReturn(employee);
 
         //when
         EmployeeService employeeService = new EmployeeService(employeeRepository);
