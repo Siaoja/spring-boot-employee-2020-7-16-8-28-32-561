@@ -5,6 +5,7 @@ import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,6 +29,13 @@ public class EmployeeIntegrationTest {
     @Autowired
     MockMvc mockMvc;
 
+    private Company company;
+
+    @BeforeEach
+    void setUp() {
+        company = companyRepository.save(new Company(null, "alibaba", 200, Collections.emptyList()));
+    }
+
     @AfterEach
     void tearDown() {
         employeeRepository.deleteAll();
@@ -37,8 +45,6 @@ public class EmployeeIntegrationTest {
     @Test
     void should_get_employee_when_hit_get_employees_endpoint_given_nothing() throws Exception {
         //given
-        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
-        company = companyRepository.save(company);
         Employee employee = new Employee(null, "alibaba1", 18, "male", 1000, company.getId());
         employee = employeeRepository.save(employee);
 
@@ -61,8 +67,6 @@ public class EmployeeIntegrationTest {
     @Test
     void should_get_employee_when_hit_get_employee_by_id_endpoint_given_id() throws Exception {
         //given
-        Company company = new Company(null, "alibaba", 200, Collections.emptyList());
-        company = companyRepository.save(company);
         Employee firstEmployee = new Employee(null, "ali1", 18, "male", 2000, company.getId());
         Employee secondEmployee = new Employee(null, "ali2", 20, "female", 2000, company.getId());
         employeeRepository.save(firstEmployee);
@@ -80,4 +84,6 @@ public class EmployeeIntegrationTest {
 
         //then
     }
+
+
 }
