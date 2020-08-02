@@ -3,6 +3,8 @@ package com.thoughtworks.springbootemployee.model;
 import javax.persistence.*;
 import java.util.List;
 
+import static javax.persistence.FetchType.EAGER;
+
 @Entity
 public class Company {
     @Id
@@ -10,7 +12,7 @@ public class Company {
     private Integer id;
     private String companyName;
     private Integer employeesNumber;
-    @OneToMany(targetEntity = Employee.class, cascade = CascadeType.ALL, mappedBy = "companyId")
+    @OneToMany(targetEntity = Employee.class, cascade = CascadeType.ALL, mappedBy = "companyId", fetch = EAGER)
     private List<Employee> employees;
 
     public Company() {
