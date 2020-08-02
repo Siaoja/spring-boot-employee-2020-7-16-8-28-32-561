@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
@@ -8,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 
 @RestController
@@ -50,9 +49,9 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Company updateCompany(@PathVariable Integer id, @RequestBody Company updatedCompany) {
+    public Company updateCompany(@PathVariable Integer id, @RequestBody Company updatedCompany) throws IllegalOperationException {
 
-        return companyService.updateCompany(id,updatedCompany);
+        return companyService.updateCompany(id, updatedCompany);
     }
 
     @DeleteMapping("/{id}")

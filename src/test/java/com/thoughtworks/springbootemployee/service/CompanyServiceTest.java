@@ -108,7 +108,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_company_when_update_company_then_given_company() {
+    void should_return_company_when_update_company_then_given_company() throws IllegalOperationException {
         //given
         Company updatedCompany = new Company(1, "huawei", 2000, null);
         given(companyRepository.save(updatedCompany)).willReturn(updatedCompany);
@@ -160,4 +160,5 @@ public class CompanyServiceTest {
         //then
         assertEquals(IllegalOperationException.class, exception.getClass());
     }
+
 }
