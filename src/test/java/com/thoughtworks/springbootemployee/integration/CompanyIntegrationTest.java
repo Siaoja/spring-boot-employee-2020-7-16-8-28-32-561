@@ -51,4 +51,17 @@ public class CompanyIntegrationTest {
                 .andExpect(jsonPath("$", hasSize(3)));
         //then
     }
+
+    @Test
+    void should_get_company_when_hit_get_company_by_id_endpoint_given_id() throws Exception {
+        //given
+        Company company = companies.get(0);
+        //when
+        mockMvc.perform(get("/companies/" + company.getId()))
+                .andExpect(jsonPath("$.id").value(company.getId()))
+                .andExpect(jsonPath("$.companyName").value(company.getCompanyName()))
+                .andExpect(jsonPath("$.employeesNumber").value(company.getEmployeesNumber()));
+
+        //then
+    }
 }
