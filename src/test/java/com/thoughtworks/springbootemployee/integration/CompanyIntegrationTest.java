@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -123,4 +125,23 @@ public class CompanyIntegrationTest {
         //then
     }
 
+    @Test
+    void should_get_added_company_when_hit_post_company_given_company() throws Exception {
+        //given
+
+        String companyInfo = "{\n" +
+                "    \"companyName\":\"oocl\",\n" +
+                "    \"employeesNumber\":200\n" +
+                "}";
+
+        //when
+        mockMvc.perform(post("/companies").contentType(MediaType.APPLICATION_JSON).content(companyInfo))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.companyName").value("oocl"))
+                .andExpect(jsonPath("$.employeesNumber").value(200));
+
+
+        //then
+    }
 }
