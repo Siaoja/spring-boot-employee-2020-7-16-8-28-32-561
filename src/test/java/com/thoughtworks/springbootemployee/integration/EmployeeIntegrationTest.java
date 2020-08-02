@@ -177,7 +177,7 @@ public class EmployeeIntegrationTest {
                 "    \"companyId\":" + company.getId() + "\n" +
                 "}";
         //when
-        mockMvc.perform(post(("/employees")).contentType(MediaType.APPLICATION_JSON).content(employeeInfo))
+        mockMvc.perform(post("/employees").contentType(MediaType.APPLICATION_JSON).content(employeeInfo))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.name").value("Xiaoming"))
