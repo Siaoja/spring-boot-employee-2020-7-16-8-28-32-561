@@ -51,7 +51,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public Employee deleteEmployee(@PathVariable Integer id) throws NoSuchDataException {
         return employeeService.deleteEmployee(id);
     }
