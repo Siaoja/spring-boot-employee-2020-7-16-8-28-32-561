@@ -1,7 +1,9 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.dto.EmployeeRequest;
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
+import com.thoughtworks.springbootemployee.mapper.EmployeeMapper;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,25 +31,25 @@ public class EmployeeController {
     }
 
     @GetMapping(params = {"page", "pageSize"})
-    public Page<Employee> getEmployeeByPage(@RequestParam() Integer page, @RequestParam() Integer pageSize) {
-        return employeeService.getAllEmployeesByPage(page,pageSize);
+    public Page<Employee> getEmployeeByPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        return employeeService.getAllEmployeesByPage(page, pageSize);
     }
 
     @GetMapping(params = {"gender"})
-    public List<Employee> getEmployeesByConditions(@RequestParam() String gender) {
+    public List<Employee> getEmployeesByConditions(@RequestParam String gender) {
         return employeeService.getEmployeesByGender(gender);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee addEmployee(@RequestBody Employee employee) {
-        return employeeService.addEmployee(employee);
+    public Employee addEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        return employeeService.addEmployee(EmployeeMapper.EmployeeRequestToEmployee(employeeRequest));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Employee updateEmployee(@PathVariable Integer id, @RequestBody Employee updateEmployee) throws IllegalOperationException, NoSuchDataException {
-        return employeeService.updateEmployee(id,updateEmployee);
+    public Employee updateEmployee(@PathVariable Integer id, @RequestBody EmployeeRequest employeeRequest) throws IllegalOperationException, NoSuchDataException {
+        return employeeService.updateEmployee(id, EmployeeMapper.EmployeeRequestToEmployee(employeeRequest));
     }
 
     @DeleteMapping("/{id}")
