@@ -109,7 +109,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_employee_when_update_employee_given_employee() {
+    void should_return_employee_when_update_employee_given_employee() throws IllegalOperationException {
         //given
         Employee employee = new Employee(1, "hello", 18, "male", 3000);
         Employee updatedEmployee = new Employee(1, "update", 18, "male", 3000);

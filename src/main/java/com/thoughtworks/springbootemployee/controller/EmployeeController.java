@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
@@ -46,7 +47,7 @@ public class EmployeeController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Employee updateEmployee(@PathVariable Integer id, @RequestBody Employee updateEmployee) {
+    public Employee updateEmployee(@PathVariable Integer id, @RequestBody Employee updateEmployee) throws IllegalOperationException {
         return employeeService.updateEmployee(id,updateEmployee);
     }
 
