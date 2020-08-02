@@ -64,4 +64,28 @@ public class CompanyIntegrationTest {
 
         //then
     }
+
+    @Test
+    void should_get_the_first_and_second_company_when_hit_get_company_by_page_and_pageSize_endpoint_given_page_1_and_pageSize_2() throws Exception {
+        //given
+        Company firstCompany = companies.get(0);
+        Company secondCompany = companies.get(1);
+        int page = 1;
+        int pageSize = 2;
+
+        //when
+
+        String requestURL = String.format("/companies?page=%s&pageSize=%s", page, pageSize);
+        mockMvc.perform(get(requestURL))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id").value(firstCompany.getId()))
+                .andExpect(jsonPath("$[0].companyName").value(firstCompany.getCompanyName()))
+                .andExpect(jsonPath("$[0].employeesNumber").value(firstCompany.getEmployeesNumber()))
+                .andExpect(jsonPath("$[1].id").value(secondCompany.getId()))
+                .andExpect(jsonPath("$[1].companyName").value(secondCompany.getCompanyName()))
+                .andExpect(jsonPath("$[1].employeesNumber").value(secondCompany.getEmployeesNumber()));
+
+        //then
+    }
 }
