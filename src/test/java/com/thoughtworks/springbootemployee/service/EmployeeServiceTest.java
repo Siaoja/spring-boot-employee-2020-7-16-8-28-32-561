@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,8 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -46,7 +46,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_employee_when_getById_given_id() {
+    void should_return_employee_when_getById_given_id() throws NoSuchDataException {
         //given
         Integer id = 1;
         Employee employee = employees.get(0);
@@ -124,7 +124,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_employee_when_delete_employee_given_employee_id() {
+    void should_return_employee_when_delete_employee_given_employee_id() throws NoSuchDataException {
         //given
         Employee employee = new Employee(1, "hello", 18, "male", 3000);
         given(employeeRepository.findById(employee.getId())).willReturn(Optional.of(employee));
@@ -135,5 +135,18 @@ public class EmployeeServiceTest {
         //then
         assertEquals(employee,returnEmployee);
 
+    }
+
+    @Test
+    void should_throw_no_such_data_exception_when_find_by_id_given_not_exist_id() {
+        //given
+        int notExistId = 4;
+        given(employeeRepository.findById(notExistId)).willReturn(Optional.empty());
+
+        //when
+        Exception exception = assertThrows(NoSuchDataException.class, () -> employeeService.getEmployeeByID(notExistId));
+
+        //then
+        assertEquals(NoSuchDataException.class, exception.getClass());
     }
 }
