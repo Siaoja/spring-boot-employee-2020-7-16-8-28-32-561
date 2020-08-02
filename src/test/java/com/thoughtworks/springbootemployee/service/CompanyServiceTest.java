@@ -110,8 +110,10 @@ public class CompanyServiceTest {
     @Test
     void should_return_company_when_update_company_then_given_company() throws IllegalOperationException, NoSuchDataException {
         //given
+        Company company = new Company(1, "ali", 1000, null);
         Company updatedCompany = new Company(1, "huawei", 2000, null);
         given(companyRepository.save(updatedCompany)).willReturn(updatedCompany);
+        given(companyRepository.findById(1)).willReturn(Optional.of(company));
 
         //when
         Company returnCompany = companyService.updateCompany(updatedCompany.getId(), updatedCompany);
