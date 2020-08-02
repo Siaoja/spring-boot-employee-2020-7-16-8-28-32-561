@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ public class EmployeeService {
     public EmployeeService() {
     }
 
+
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
@@ -25,8 +27,12 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Employee getEmployeeByID(Integer id) {
-        return employeeRepository.findById(id).orElse(null);
+    public Employee getEmployeeByID(Integer id) throws NoSuchDataException {
+        Employee employee = employeeRepository.findById(id).orElse(null);
+        if (employee == null){
+            throw new NoSuchDataException();
+        }
+        return employee;
     }
 
     public Page<Employee> getAllEmployeesByPage(Integer page, Integer pageSize) {
@@ -47,7 +53,7 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public Employee deleteEmployee(Integer id) {
+    public Employee deleteEmployee(Integer id) throws NoSuchDataException {
         Employee employee = getEmployeeByID(id);
         employeeRepository.deleteById(id);
         return employee;

@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public Employee getEmployeeById(@PathVariable Integer id) {
+    public Employee getEmployeeById(@PathVariable Integer id) throws NoSuchDataException {
         return employeeService.getEmployeeByID(id);
     }
 
@@ -51,7 +52,7 @@ public class EmployeeController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Employee deleteEmployee(@PathVariable Integer id) {
+    public Employee deleteEmployee(@PathVariable Integer id) throws NoSuchDataException {
         return employeeService.deleteEmployee(id);
     }
 
