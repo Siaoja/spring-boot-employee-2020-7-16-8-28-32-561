@@ -10,12 +10,20 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "COMPANYNAME")
     private String companyName;
+    @Column(name = "EMPLOYEESNUMBER")
     private Integer employeesNumber;
     @OneToMany(targetEntity = Employee.class, cascade = CascadeType.ALL, mappedBy = "companyId", fetch = EAGER)
     private List<Employee> employees;
 
     public Company() {
+    }
+
+    public Company(Integer id, String companyName, Integer employeesNumber) {
+        this.id = id;
+        this.companyName = companyName;
+        this.employeesNumber = employeesNumber;
     }
 
     public Company(Integer id, String companyName, Integer employeesNumber, List<Employee> employees) {

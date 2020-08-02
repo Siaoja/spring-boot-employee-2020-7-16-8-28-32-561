@@ -34,7 +34,7 @@ public class EmployeeIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        company = companyRepository.save(new Company(null, "alibaba", 200, Collections.emptyList()));
+        company = companyRepository.save(new Company(null, "alibaba", 200));
     }
 
     @AfterEach

@@ -12,6 +12,7 @@ public class Employee {
     private Integer age;
     private String gender;
     private Integer salary;
+    @Column(name = "COMPANYID")
     private Integer companyId;
 
     public Employee() {
