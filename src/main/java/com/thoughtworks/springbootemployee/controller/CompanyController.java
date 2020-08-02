@@ -55,7 +55,7 @@ public class CompanyController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public Company deleteCompanyById(@PathVariable Integer id) throws NoSuchDataException {
 
         return companyService.deleteCompany(id);

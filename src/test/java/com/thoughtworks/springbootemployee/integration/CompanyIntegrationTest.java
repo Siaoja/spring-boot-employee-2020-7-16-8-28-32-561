@@ -164,5 +164,17 @@ public class CompanyIntegrationTest {
         //then
     }
 
+    @Test
+    void should_return_status_accepted_when_delete_a_employee_given_id() throws Exception {
+        //given
+        Company company = companies.get(1);
+        //when
+        mockMvc.perform(delete(("/companies/" + company.getId())))
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.id").value(company.getId()))
+                .andExpect(jsonPath("$.companyName").value(company.getCompanyName()))
+                .andExpect(jsonPath("$.employeesNumber").value(company.getEmployeesNumber()));
+        //then
 
+    }
 }
