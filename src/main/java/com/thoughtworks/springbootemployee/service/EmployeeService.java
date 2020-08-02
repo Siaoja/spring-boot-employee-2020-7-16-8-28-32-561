@@ -49,12 +49,16 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public Employee updateEmployee(Integer id, Employee employee) throws IllegalOperationException {
+    public Employee updateEmployee(Integer id, Employee employee) throws IllegalOperationException, NoSuchDataException {
         if(id != employee.getId()){
             throw new IllegalOperationException();
         }
         employee.setId(id);
-        return employeeRepository.save(employee);
+        Employee updatedEmployee = employeeRepository.save(employee);
+        if(updatedEmployee == null){
+            throw new NoSuchDataException();
+        }
+        return updatedEmployee;
     }
 
     public Employee deleteEmployee(Integer id) throws NoSuchDataException {
