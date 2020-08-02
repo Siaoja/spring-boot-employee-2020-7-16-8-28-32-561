@@ -1,7 +1,9 @@
 package com.thoughtworks.springbootemployee.controller;
 
+import com.thoughtworks.springbootemployee.dto.CompanyRequest;
 import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
+import com.thoughtworks.springbootemployee.mapper.CompanyMapper;
 import com.thoughtworks.springbootemployee.model.Company;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.service.CompanyService;
@@ -43,15 +45,15 @@ public class CompanyController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Company addCompany(@RequestBody Company company) {
-        return companyService.addCompany(company);
+    public Company addCompany(@RequestBody CompanyRequest companyRequest) {
+        return companyService.addCompany(CompanyMapper.companyRequestToCompany(companyRequest));
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Company updateCompany(@PathVariable Integer id, @RequestBody Company updatedCompany) throws IllegalOperationException, NoSuchDataException {
+    public Company updateCompany(@PathVariable Integer id, @RequestBody CompanyRequest updatedCompanyRequest) throws IllegalOperationException, NoSuchDataException {
 
-        return companyService.updateCompany(id, updatedCompany);
+        return companyService.updateCompany(id, CompanyMapper.companyRequestToCompany(updatedCompanyRequest));
     }
 
     @DeleteMapping("/{id}")
