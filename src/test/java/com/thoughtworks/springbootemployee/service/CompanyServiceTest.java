@@ -174,4 +174,15 @@ public class CompanyServiceTest {
         assertEquals(NoSuchDataException.class, exception.getClass());
     }
 
+    @Test
+    void should_throw_no_such_data_exception_when_delete_company_given_not_exist_id() {
+        //given
+        int notExistId = 4;
+
+        //when
+        Exception exception = assertThrows(NoSuchDataException.class, () -> companyService.deleteCompany(notExistId));
+
+        //then
+        assertEquals(NoSuchDataException.class, exception.getClass());
+    }
 }
