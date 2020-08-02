@@ -66,7 +66,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_company_when_get_company_then_given_id() {
+    void should_return_company_when_get_company_then_given_id() throws NoSuchDataException {
         //given
         int id = 1;
         given(companyRepository.findById(id)).willReturn(Optional.of(companies.get(id)));
@@ -146,4 +146,6 @@ public class CompanyServiceTest {
         //then
         assertEquals(NoSuchDataException.class, exception.getClass());
     }
+
+
 }
