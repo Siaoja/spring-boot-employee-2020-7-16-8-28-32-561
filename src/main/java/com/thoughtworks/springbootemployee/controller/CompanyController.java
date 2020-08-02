@@ -49,14 +49,14 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Company updateCompany(@PathVariable Integer id, @RequestBody Company updatedCompany) throws IllegalOperationException {
+    public Company updateCompany(@PathVariable Integer id, @RequestBody Company updatedCompany) throws IllegalOperationException, NoSuchDataException {
 
         return companyService.updateCompany(id, updatedCompany);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Company deleteCompanyById(@PathVariable Integer id) {
+    public Company deleteCompanyById(@PathVariable Integer id) throws NoSuchDataException {
 
         return companyService.deleteCompany(id);
     }

@@ -56,18 +56,16 @@ public class CompanyService {
         return companyRepository.save(company);
     }
 
-    public Company updateCompany(Integer id, Company company) throws IllegalOperationException {
+    public Company updateCompany(Integer id, Company company) throws IllegalOperationException, NoSuchDataException {
         if (id != company.getId()) {
             throw new IllegalOperationException();
         }
+        getCompanyById(id);
         return companyRepository.save(company);
     }
 
-    public Company deleteCompany(Integer id) {
-        Company deletedCompany = companyRepository.findById(id).orElse(null);
-        if (deletedCompany == null) {
-            return null;
-        }
+    public Company deleteCompany(Integer id) throws NoSuchDataException {
+        Company deletedCompany = getCompanyById(id);
         companyRepository.deleteById(id);
         return deletedCompany;
     }
