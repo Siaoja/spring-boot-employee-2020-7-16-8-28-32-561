@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -46,7 +45,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public Employee updateEmployee(@PathVariable Integer id, @RequestBody Employee updateEmployee) throws IllegalOperationException, NoSuchDataException {
         return employeeService.updateEmployee(id,updateEmployee);
     }
