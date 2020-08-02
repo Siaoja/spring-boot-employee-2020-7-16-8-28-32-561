@@ -109,7 +109,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void should_return_employee_when_update_employee_given_employee() throws IllegalOperationException {
+    void should_return_employee_when_update_employee_given_employee() throws IllegalOperationException, NoSuchDataException {
         //given
         Employee employee = new Employee(1, "hello", 18, "male", 3000);
         Employee updatedEmployee = new Employee(1, "update", 18, "male", 3000);
@@ -162,5 +162,19 @@ public class EmployeeServiceTest {
 
         //then
         assertEquals(IllegalOperationException.class, exception.getClass());
+    }
+
+    @Test
+    void should_throw_no_such_data_exception_when_update_employee_given_not_exist_id() {
+        //given
+        int id = 5;
+        Employee employee = new Employee(5, "123", 1, "female", 1000);
+        given(employeeRepository.findById(id)).willReturn(null);
+
+        //when
+        Exception exception = assertThrows(NoSuchDataException.class, () -> employeeService.updateEmployee(id, employee));
+
+        //then
+        assertEquals(NoSuchDataException.class, exception.getClass());
     }
 }
