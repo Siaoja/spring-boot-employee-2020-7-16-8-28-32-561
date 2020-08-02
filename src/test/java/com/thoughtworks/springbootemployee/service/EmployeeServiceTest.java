@@ -1,5 +1,6 @@
 package com.thoughtworks.springbootemployee.service;
 
+import com.thoughtworks.springbootemployee.exception.IllegalOperationException;
 import com.thoughtworks.springbootemployee.exception.NoSuchDataException;
 import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
@@ -148,5 +149,18 @@ public class EmployeeServiceTest {
 
         //then
         assertEquals(NoSuchDataException.class, exception.getClass());
+    }
+
+    @Test
+    void should_throw_illegal_operation_exception_when_update_employee_given_illegal_id_4_and_employee_id_3() {
+        //given
+        int illegalId = 4;
+        Employee employee = employees.get(2);
+
+        //when
+        Exception exception = assertThrows(IllegalOperationException.class, () -> employeeService.updateEmployee(illegalId, employee));
+
+        //then
+        assertEquals(IllegalOperationException.class, exception.getClass());
     }
 }
