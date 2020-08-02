@@ -108,7 +108,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_company_when_update_company_then_given_company() throws IllegalOperationException {
+    void should_return_company_when_update_company_then_given_company() throws IllegalOperationException, NoSuchDataException {
         //given
         Company updatedCompany = new Company(1, "huawei", 2000, null);
         given(companyRepository.save(updatedCompany)).willReturn(updatedCompany);
@@ -122,7 +122,7 @@ public class CompanyServiceTest {
     }
 
     @Test
-    void should_return_company_when_delete_company_then_given_id() {
+    void should_return_company_when_delete_company_then_given_id() throws NoSuchDataException {
         //given
         int id = 1;
         given(companyRepository.findById(id)).willReturn(Optional.of(companies.get(id)));
@@ -159,6 +159,19 @@ public class CompanyServiceTest {
 
         //then
         assertEquals(IllegalOperationException.class, exception.getClass());
+    }
+
+    @Test
+    void should_throw_no_such_data_exception_when_update_company_given_not_exist_id() {
+//        given
+        int notExistId = 4;
+        Company company = new Company(4, "huawei", 0, null);
+
+        //when
+        Exception exception = assertThrows(NoSuchDataException.class, () -> companyService.updateCompany(notExistId, company));
+
+        //then
+        assertEquals(NoSuchDataException.class, exception.getClass());
     }
 
 }
