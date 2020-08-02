@@ -149,17 +149,16 @@ public class CompanyIntegrationTest {
         //given
 
         String companyInfo = "{\n" +
-                "    \"id\":" + 2 + ",\n" +
+                "    \"id\":" + companies.get(1).getId() + ",\n" +
                 "    \"companyName\":\"oocl\",\n" +
                 "    \"employeesNumber\":100\n" +
                 "}";
         //when
-        mockMvc.perform(put(("/companies/" + 2)).contentType(MediaType.APPLICATION_JSON).content(companyInfo))
+        mockMvc.perform(put(("/companies/" + companies.get(1).getId())).contentType(MediaType.APPLICATION_JSON).content(companyInfo))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").isNumber())
                 .andExpect(jsonPath("$.companyName").value("oocl"))
                 .andExpect(jsonPath("$.employeesNumber").value(100));
-
 
         //then
     }
