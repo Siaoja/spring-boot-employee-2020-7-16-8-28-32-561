@@ -86,4 +86,43 @@ public class EmployeeIntegrationTest {
     }
 
 
+    @Test
+    void should_get_the_third_and_forth_employees_when_hit_get_employee_specified_page_and_pageSize_endpoint_given_page_2_and_pageSize_2() throws Exception {
+        //given
+        Employee firstEmployee = new Employee(null, "ali1", 18, "male", 2000, company.getId());
+        Employee secondEmployee = new Employee(null, "ali2", 20, "female", 2000, company.getId());
+        Employee thirdEmployee = new Employee(null, "ali3", 18, "male", 2000, company.getId());
+        Employee forthEmployee = new Employee(null, "ali4", 20, "female", 2000, company.getId());
+        Employee fifthEmployee = new Employee(null, "ali5", 18, "male", 2000, company.getId());
+        Employee sixthEmployee = new Employee(null, "ali6", 20, "female", 2000, company.getId());
+        employeeRepository.save(firstEmployee);
+        employeeRepository.save(secondEmployee);
+        thirdEmployee = employeeRepository.save(thirdEmployee);
+        forthEmployee = employeeRepository.save(forthEmployee);
+        employeeRepository.save(fifthEmployee);
+        employeeRepository.save(sixthEmployee);
+        int page = 2;
+        int pageSize = 2;
+
+        //when
+
+        String url = String.format("/employees?page=%s&pageSize=%s", page, pageSize);
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content", hasSize(2)))
+                .andExpect(jsonPath("$.content[0].id").value(thirdEmployee.getId()))
+                .andExpect(jsonPath("$.content[0].name").value(thirdEmployee.getName()))
+                .andExpect(jsonPath("$.content[0].age").value(thirdEmployee.getAge()))
+                .andExpect(jsonPath("$.content[0].salary").value(thirdEmployee.getSalary()))
+                .andExpect(jsonPath("$.content[0].gender").value(thirdEmployee.getGender()))
+                .andExpect(jsonPath("$.content[0].companyId").value(thirdEmployee.getCompanyId()))
+                .andExpect(jsonPath("$.content[1].id").value(forthEmployee.getId()))
+                .andExpect(jsonPath("$.content[1].name").value(forthEmployee.getName()))
+                .andExpect(jsonPath("$.content[1].age").value(forthEmployee.getAge()))
+                .andExpect(jsonPath("$.content[1].salary").value(forthEmployee.getSalary()))
+                .andExpect(jsonPath("$.content[1].gender").value(forthEmployee.getGender()))
+                .andExpect(jsonPath("$.content[1].companyId").value(forthEmployee.getCompanyId()));
+
+        //then
+    }
 }
