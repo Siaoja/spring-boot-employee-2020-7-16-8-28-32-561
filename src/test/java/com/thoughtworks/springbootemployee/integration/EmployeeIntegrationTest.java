@@ -125,4 +125,45 @@ public class EmployeeIntegrationTest {
 
         //then
     }
+
+    @Test
+    void should_get_employees_when_hit_get_employee_by_gender_given_gender_male() throws Exception {
+        //given
+        Employee firstEmployee = new Employee(null, "ali1", 18, "male", 2000, company.getId());
+        Employee secondEmployee = new Employee(null, "ali2", 20, "female", 2000, company.getId());
+        Employee thirdEmployee = new Employee(null, "ali3", 18, "male", 2000, company.getId());
+        Employee forthEmployee = new Employee(null, "ali4", 20, "female", 2000, company.getId());
+        Employee fifthEmployee = new Employee(null, "ali5", 18, "female", 2000, company.getId());
+        Employee sixthEmployee = new Employee(null, "ali6", 20, "female", 2000, company.getId());
+        firstEmployee = employeeRepository.save(firstEmployee);
+        employeeRepository.save(secondEmployee);
+        thirdEmployee = employeeRepository.save(thirdEmployee);
+        employeeRepository.save(forthEmployee);
+        employeeRepository.save(fifthEmployee);
+        employeeRepository.save(sixthEmployee);
+        String gender = "male";
+
+        //when
+
+        String url = String.format("/employees?gender=%s", gender);
+        mockMvc.perform(get(url))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id").value(firstEmployee.getId()))
+                .andExpect(jsonPath("$[0].name").value(firstEmployee.getName()))
+                .andExpect(jsonPath("$[0].age").value(firstEmployee.getAge()))
+                .andExpect(jsonPath("$[0].salary").value(firstEmployee.getSalary()))
+                .andExpect(jsonPath("$[0].gender").value(firstEmployee.getGender()))
+                .andExpect(jsonPath("$[0].companyId").value(firstEmployee.getCompanyId()))
+                .andExpect(jsonPath("$[1].id").value(thirdEmployee.getId()))
+                .andExpect(jsonPath("$[1].name").value(thirdEmployee.getName()))
+                .andExpect(jsonPath("$[1].age").value(thirdEmployee.getAge()))
+                .andExpect(jsonPath("$[1].salary").value(thirdEmployee.getSalary()))
+                .andExpect(jsonPath("$[1].gender").value(thirdEmployee.getGender()))
+                .andExpect(jsonPath("$[1].companyId").value(thirdEmployee.getCompanyId()));
+
+        //then
+    }
+
+
 }
