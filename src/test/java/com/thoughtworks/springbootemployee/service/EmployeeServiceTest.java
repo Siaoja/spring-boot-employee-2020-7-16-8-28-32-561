@@ -167,14 +167,28 @@ public class EmployeeServiceTest {
     @Test
     void should_throw_no_such_data_exception_when_update_employee_given_not_exist_id() {
         //given
-        int id = 5;
+        int notExistId = 5;
         Employee employee = new Employee(5, "123", 1, "female", 1000);
-        given(employeeRepository.findById(id)).willReturn(null);
+        given(employeeRepository.save(employee)).willReturn(null);
 
         //when
-        Exception exception = assertThrows(NoSuchDataException.class, () -> employeeService.updateEmployee(id, employee));
+        Exception exception = assertThrows(NoSuchDataException.class, () -> employeeService.updateEmployee(notExistId, employee));
 
         //then
         assertEquals(NoSuchDataException.class, exception.getClass());
     }
+
+    @Test
+    void should_throw_no_such_data_exception_when_delete_employee_given_not_exist_id(){
+        //given
+        int notExistId = 5;
+        given(employeeRepository.findById(notExistId)).willReturn(Optional.empty());
+
+        //when
+        Exception exception = assertThrows(NoSuchDataException.class, () -> employeeService.deleteEmployee(notExistId));
+
+        //then
+        assertEquals(NoSuchDataException.class, exception.getClass());
+    }
+
 }
