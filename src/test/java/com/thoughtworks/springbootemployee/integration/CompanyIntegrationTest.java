@@ -17,8 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -144,4 +143,26 @@ public class CompanyIntegrationTest {
 
         //then
     }
+
+    @Test
+    void should_get_updated_company_when_hit_put_company_endpoint_given_id_and_company_info() throws Exception {
+        //given
+
+        String companyInfo = "{\n" +
+                "    \"id\":" + 2 + ",\n" +
+                "    \"companyName\":\"oocl\",\n" +
+                "    \"employeesNumber\":100\n" +
+                "}";
+        //when
+        mockMvc.perform(put(("/companies/" + 2)).contentType(MediaType.APPLICATION_JSON).content(companyInfo))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").isNumber())
+                .andExpect(jsonPath("$.companyName").value("oocl"))
+                .andExpect(jsonPath("$.employeesNumber").value(100));
+
+
+        //then
+    }
+
+
 }
