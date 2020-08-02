@@ -1,7 +1,9 @@
 package com.thoughtworks.springbootemployee.integration;
 
 import com.thoughtworks.springbootemployee.model.Company;
+import com.thoughtworks.springbootemployee.model.Employee;
 import com.thoughtworks.springbootemployee.repository.CompanyRepository;
+import com.thoughtworks.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,8 +26,12 @@ public class CompanyIntegrationTest {
     @Autowired
     CompanyRepository companyRepository;
     @Autowired
+    EmployeeRepository employeeRepository;
+    @Autowired
     MockMvc mockMvc;
-    List<Company> companies;
+
+    private List<Employee> employees;
+    private List<Company> companies;
 
     @BeforeEach
     void setUp() {
@@ -34,11 +40,17 @@ public class CompanyIntegrationTest {
         companies.add(new Company(null, "tencent", 100, null));
         companies.add(new Company(null, "oocl", 100, null));
         companies = companyRepository.saveAll(companies);
+        employees = new ArrayList<>();
+        employees.add(employeeRepository.save(new Employee(null, "tencent", 18, "male", 2000, companies.get(1).getId())));
+        employees.add(employeeRepository.save(new Employee(null, "mahuateng", 50, "male", 100000, companies.get(1).getId())));
+
+
     }
 
     @AfterEach
     void tearDown() {
         companyRepository.deleteAll();
+        employeeRepository.deleteAll();
     }
 
     @Test
@@ -88,4 +100,27 @@ public class CompanyIntegrationTest {
 
         //then
     }
+
+    @Test
+    void should_get_employees_when_hit_get_employees_given_company_id_1() throws Exception {
+        //given
+        int id = companies.get(1).getId();
+
+        //when
+        String requestURL = String.format("/companies/%s/employees", id);
+        mockMvc.perform(get(requestURL))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id").value(employees.get(0).getId()))
+                .andExpect(jsonPath("$[0].age").value(employees.get(0).getAge()))
+                .andExpect(jsonPath("$[0].gender").value(employees.get(0).getGender()))
+                .andExpect(jsonPath("$[0].salary").value(employees.get(0).getSalary()))
+                .andExpect(jsonPath("$[0].companyId").value(employees.get(0).getCompanyId()))
+                .andExpect(jsonPath("$[1].id").value(employees.get(1).getId()))
+                .andExpect(jsonPath("$[1].age").value(employees.get(1).getAge()))
+                .andExpect(jsonPath("$[1].gender").value(employees.get(1).getGender()))
+                .andExpect(jsonPath("$[1].salary").value(employees.get(1).getSalary()))
+                .andExpect(jsonPath("$[1].companyId").value(employees.get(1).getCompanyId()));
+        //then
+    }
+
 }

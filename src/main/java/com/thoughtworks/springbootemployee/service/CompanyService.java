@@ -46,7 +46,7 @@ public class CompanyService {
 
     public List<Employee> getEmployeesByCompanyId(Integer companyId) {
         Company company = companyRepository.findById(companyId).orElse(null);
-        if (company == null || company.getEmployees() == null) {
+        if (company == null) {
             return null;
         }
         return company.getEmployees();
